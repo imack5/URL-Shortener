@@ -3,6 +3,21 @@ var app = express();
 var PORT = process.env.PORT || 8080; // default port 8080
 var cookieParser = require('cookie-parser');
 
+const users = {
+  "userRandomID":
+                  {
+                    id: "userRandomID",
+                    email: "user@example.com",
+                    password: "purple-monkey-dinosaur"
+                  },
+ "user2RandomID":
+                  {
+                    id: "user2RandomID",
+                    email: "user2@example.com",
+                    password: "dishwasher-funk"
+                  }
+};
+
 app.use(cookieParser());
 app.set("view engine", "ejs");
 
@@ -117,7 +132,15 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-
+  var userID = generateRandomString(6);
+  res.cookie('username', userID);
+  users[userID] = {
+    id: userID,
+    email: req.body.email,
+    password: req.body.password
+  };
+  console.log(users);
+  res.redirect("/urls");
 });
 
 
