@@ -16,6 +16,7 @@ const users = {
                     email: "user2@example.com",
                     password: "dishwasher-funk"
                   }
+
 };
 
 app.use(cookieParser());
@@ -44,8 +45,17 @@ function generateRandomString(length){
 console.log(generateRandomString(6));
 
 var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2":
+            {
+              url: "http://www.lighthouselabs.ca",
+              id: "i_mack5@hotmail.com"
+            },
+
+  "9sm5xK":
+            {
+              url: "http://www.google.com",
+              id: "i_mack5@hotmail.com"
+            }
 };
 
 app.get("/", (req, res) => {
@@ -90,7 +100,7 @@ app.get("/urls/:id", (req, res) => {
 
   let templateVars =  {
                         shortUrls: req.params.id,
-                        fullUrl: urlDatabase[req.params.id],
+                        fullUrl: urlDatabase[req.params.id].url,
                         user_ID: req.cookies["user_ID"],
                         users: users
                       };
@@ -100,13 +110,16 @@ app.get("/urls/:id", (req, res) => {
 
 app.post("/urls", (req, res) => {
   console.log(req.body);
-  urlDatabase[generateRandomString(6)] = req.body.longURL;
+  let randomString = generateRandomString(6)
+  urlDatabase[randomString].url = req.body.longURL;
+  urlDatabase[randomString].id = req.cookies['user_ID'];
+
   console.log(urlDatabase);
   res.send("Posted new url " + req.body.longURL);         // Respond with 'Ok' (we will replace this)
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL];
+  let longURL = urlDatabase[req.params.shortURL].url;
   res.redirect(longURL);
 });
 
@@ -118,7 +131,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
 app.post("/urls/:id", (req, res) => {
   console.log('Hey!!')
-  urlDatabase[req.params.id] = req.body.longURL;
+  urlDatabase[req.params.id].url = req.body.longURL;
 
   res.redirect("/urls");
 });
