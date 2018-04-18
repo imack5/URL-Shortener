@@ -133,6 +133,18 @@ app.get("/register", (req, res) => {
 
 app.post("/register", (req, res) => {
   var userID = generateRandomString(6);
+
+  if(req.body.email == '' || req.body.password == ''){
+    res.status(400).send('You must complete the email and password forms fully');
+  }
+
+  for(let a in users){
+    if(users[a].email == req.body.email){
+      res.status(400).send('Email already registered');
+    }
+  }
+
+
   res.cookie('username', userID);
   users[userID] = {
     id: userID,
