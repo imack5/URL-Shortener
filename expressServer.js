@@ -69,17 +69,17 @@ app.get("/urls", (req, res) => {
 
   let templateVars = {
                        urls: urlDatabase,
-                       username: req.cookies["username"],
+                       user_ID: req.cookies["user_ID"],
                        users: users
                      };
-
+                     console.log(templateVars.user_ID)
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
 
   let templateVars =  {
-                        username: req.cookies["username"],
+                        user_ID: req.cookies["user_ID"],
                         users: users
                       };
 
@@ -91,7 +91,7 @@ app.get("/urls/:id", (req, res) => {
   let templateVars =  {
                         shortUrls: req.params.id,
                         fullUrl: urlDatabase[req.params.id],
-                        username: req.cookies["username"],
+                        user_ID: req.cookies["user_ID"],
                         users: users
                       };
 
@@ -124,15 +124,25 @@ app.post("/urls/:id", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  var something = req.body.username;
-  res.cookie('username', something);
-  console.log(something);
+  var emailCheck = false;
+  var something = req.body.email;
+  for(let userID in users){
+    if(users[userID].email == req.body.email){
+      emailCheck = true;
+      if(users[userID].password == req.body.password){
+        res.cookie('user_ID', userID);
+      } else {
+        res.status(403).send('Passwords dont match!');
+      }
+    }
+  }
+  if(!emailCheck){ res.status(400).send('No Email in the system');}
   res.redirect("/urls")
 
 });
 
 app.get("/logout", (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_ID');
   res.redirect("/urls");
 });
 
@@ -154,7 +164,8 @@ app.post("/register", (req, res) => {
   }
 
 
-  res.cookie('username', userID);
+  res.cookie('user_ID', userID);
+
   users[userID] = {
     id: userID,
     email: req.body.email,
@@ -166,7 +177,7 @@ app.post("/register", (req, res) => {
 
 app.get("/login", (req, res) => {
   let templateVars =  {
-                        username: req.cookies["username"],
+                        user_ID: req.cookies["user_ID"],
                         users: users
                       };
 

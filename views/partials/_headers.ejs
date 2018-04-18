@@ -1,6 +1,6 @@
 <h1>
-<%if(username){%>
-  Username: <%=users[username].email%>
+<%if(user_ID){%>
+  Username: <%=users[user_ID].email%>
   <form method="GET" action="/logout">
     <input type="submit" value="logout">
   </form>
