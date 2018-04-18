@@ -1,6 +1,9 @@
 <h1>
 <%if(username){%>
   Username: <%=username%>
+  <form method="GET" action="/logout">
+    <input type="submit" value="logout">
+  </form>
 <%} else {%>
   <form method="POST" action ="/login">
     <input id="username" name="username" type="text">
