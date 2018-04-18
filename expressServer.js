@@ -112,6 +112,14 @@ app.get("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
+app.get("/register", (req, res) => {
+  res.render("registration");
+});
+
+app.post("/register", (req, res) => {
+
+});
+
 
 
 
