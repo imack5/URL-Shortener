@@ -65,27 +65,36 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  console.log(req.cookies)
+  console.log(req.cookies);
+
   let templateVars = {
                        urls: urlDatabase,
-                       username: req.cookies["username"]
+                       username: req.cookies["username"],
+                       users: users
                      };
+
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
+
   let templateVars =  {
-                        username: req.cookies["username"]
+                        username: req.cookies["username"],
+                        users: users
                       };
+
   res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:id", (req, res) => {
+
   let templateVars =  {
                         shortUrls: req.params.id,
                         fullUrl: urlDatabase[req.params.id],
-                        username: req.cookies["username"]
+                        username: req.cookies["username"],
+                        users: users
                       };
+
   res.render("urls_show", templateVars);
 });
 
