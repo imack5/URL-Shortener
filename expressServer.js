@@ -164,6 +164,15 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 
+app.get("/login", (req, res) => {
+  let templateVars =  {
+                        username: req.cookies["username"],
+                        users: users
+                      };
+
+  res.render("login", templateVars)
+});
+
 
 
 
