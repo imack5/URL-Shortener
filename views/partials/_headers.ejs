@@ -1,6 +1,10 @@
-<h>
+<h1>
+<%if(username){%>
+  Username: <%=username%>
+<%} else {%>
   <form method="POST" action ="/login">
     <input id="username" name="username" type="text">
     <input type="submit" value="Login">
   </form>
-</h>
+<%}%>
+</h1>
