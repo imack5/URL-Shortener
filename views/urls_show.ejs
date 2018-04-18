@@ -1,0 +1,16 @@
+<html lang="en">
+<head>
+</head>
+<body>
+  <h>TinyApp:  <%= shortUrls %></h>
+  <ul>
+    <li>
+      <form method="POST" action="/urls/<%= shortUrls %>" >
+        <label for="longURL"> <%= fullUrl %> </label>
+        <input id="longURL" type="text" name="longURL" placeholder="<%= fullUrl %>">
+        <button name="button">UPDATE</button>
+      </form>
+    </li>
+  </ul>
+</body>
+</html>
