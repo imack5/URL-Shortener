@@ -88,7 +88,9 @@ app.post("/urls/:id", (req, res) => {
 
 app.post("/login", (req, res) => {
   var something = req.body.username;
+  res.cookie('name', something);
   console.log(something);
+  res.redirect("/urls")
 
 });
 
