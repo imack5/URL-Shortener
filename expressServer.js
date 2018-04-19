@@ -1,9 +1,15 @@
 var express = require("express");
 var app = express();
-var PORT = process.env.PORT || 3000; // default port 3000
+var PORT = process.env.PORT || 5000; // default port 3000
 var cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
-var cookieSession = require('cookie-session')
+var cookieSession = require('cookie-session');
+var methodOverride = require('method-override');
+
+app.use(methodOverride('_method'));
+
+
+app.use(methodOverride('X-HTTP-Method-Override'))
 
 app.use(cookieSession({
   name: 'session',
@@ -175,7 +181,7 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 //Deletes shortURL
-app.post("/urls/:id/delete", (req, res) => {
+app.delete("/urls/:id/delete", (req, res) => {
 
   //Verifies ownership
   if(urlDatabase[req.params.id].id == users[req.session.user_id].email){
@@ -186,13 +192,13 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 
 //updates longUrl of specified shortURL
-app.post("/urls/:id", (req, res) => {
+app.put("/urls/:id", (req, res) => {
   urlDatabase[req.params.id].url = req.body.longURL;
   res.redirect("/urls");
 });
 
 //logs in corresponding user
-app.post("/login", (req, res) => {
+app.put("/login", (req, res) => {
   let emailCheck = false;
 
   //iterates through users in the database

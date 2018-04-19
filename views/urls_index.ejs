@@ -9,11 +9,11 @@
     <% for (var a in urls) { %>
     <li>
       <%=a%>: <%= urls[a].url %>  ----->
-        <form method="POST" action="/urls/<%= a %>/delete" style='display:inline;'>
+        <form method="POST" action="/urls/<%= a %>/delete/?_method=DELETE" style='display:inline;'>
          <button name="button">DELETE</button>
 
         </form>
-        <form method="GET" action="/urls/<%= a %>" style='display:inline;'>
+        <form method="GET" action="/urls/<%= a %>?_method=PUT" style='display:inline;'>
           <button name="button"> Edit </button>
         </form>
     </li>

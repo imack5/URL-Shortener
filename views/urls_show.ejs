@@ -6,7 +6,7 @@
   <h>TinyApp:  <%= shortUrls %></h>
   <ul>
     <li>
-      <form method="POST" action="/urls/<%= shortUrls %>" >
+      <form method="POST" action="/urls/<%= shortUrls %>/?_method=PUT" >
         <label for="longURL"> <%= fullUrl %> </label>
         <input id="longURL" type="text" name="longURL" placeholder="<%= fullUrl %>">
         <button name="button">UPDATE</button>
