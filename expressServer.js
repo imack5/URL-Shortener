@@ -76,13 +76,15 @@ var urlDatabase = {
   "b2xVn2":
             {
               url: "http://www.lighthouselabs.ca",
-              id: "i_mack5@hotmail.com"
+              id: "i_mack5@hotmail.com",
+              views: 0
             },
 
   "9sm5xK":
             {
               url: "http://www.google.com",
-              id: "tim@hotmail.com"
+              id: "tim@hotmail.com",
+              views: 0
             }
 };
 
@@ -163,7 +165,8 @@ app.post("/urls", (req, res) => {
 
   urlDatabase[randomString] = {
                                 url: req.body.longURL,
-                                id: users[req.session.user_id].email
+                                id: users[req.session.user_id].email,
+                                views: 0
                               };
 
   res.redirect(`urls/${randomString}`)
