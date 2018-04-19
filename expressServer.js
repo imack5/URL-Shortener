@@ -140,7 +140,7 @@ app.get("/urls/:id", (req, res) => {
   //Vars to pass into the /views/..
   let templateVars =  {
                         shortUrls: req.params.id,
-                        fullUrl: urlDatabase[req.params.id].url,
+                        fullUrl: urlDatabase[req.params.id],
                         user_ID: req.session.user_id,
                         users: users
                       };
@@ -174,10 +174,14 @@ app.post("/urls", (req, res) => {
 
 //Navigates to shortURL's corresponding longURL
 app.get("/u/:shortURL", (req, res) => {
-
-  if(urlDatabase[req.params.id] === undefined){
+  console.log('hi')
+  console.log(req.params.shortURL)
+  if(urlDatabase[req.params.shortURL] === undefined){
     res.send('This short URL doesnt exist');
   }
+
+  //Increments views on specified TinyUrl
+  urlDatabase[req.params.shortURL].views++;
 
   let longURL = urlDatabase[req.params.shortURL].url;
   res.redirect(longURL);

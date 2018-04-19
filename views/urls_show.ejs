@@ -7,9 +7,10 @@
   <ul>
     <li>
       <form method="POST" action="/urls/<%= shortUrls %>/?_method=PUT" >
-        <label for="longURL"> <%= fullUrl %> </label>
-        <input id="longURL" type="text" name="longURL" placeholder="<%= fullUrl %>">
+        <label for="longURL"> <%= fullUrl.url %> </label>
+        <input id="longURL" type="text" name="longURL" placeholder="<%= fullUrl.url %>">
         <button name="button">UPDATE</button>
+        <p> VIEWS: <%= fullUrl.views %>
       </form>
     </li>
   </ul>
