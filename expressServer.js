@@ -2,13 +2,13 @@ var express = require("express");
 var app = express();
 var PORT = process.env.PORT || 8080; // default port 8080
 var cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 
-console.log("hieee");
+app.use(cookieParser());
+app.set("view engine", "ejs");
 
-console.log("hey");
-
-console.log("hiiiiiii");
-
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
 
 function generateRandomString(length){
   let randomString = [];
@@ -63,16 +63,6 @@ const users = {
                   }
 
 };
-
-app.use(cookieParser());
-app.set("view engine", "ejs");
-
-
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
-
-
-
 
 var urlDatabase = {
   "b2xVn2":
@@ -192,7 +182,7 @@ app.post("/login", (req, res) => {
   for(let userID in users){
     if(users[userID].email == req.body.email){
       emailCheck = true;
-      if(users[userID].password == req.body.password){
+      if(bcrypt.compareSync(users[userID].password, req.body.password)){
         res.cookie('user_ID', userID);
       } else {
         res.status(403).send('Passwords dont match!');
@@ -232,8 +222,9 @@ app.post("/register", (req, res) => {
   users[userID] = {
     id: userID,
     email: req.body.email,
-    password: req.body.password
+    password: bcrypt.hashSync(req.body.password, 10)
   };
+
   console.log(users);
   res.redirect("/urls");
 });
