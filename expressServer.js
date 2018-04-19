@@ -77,14 +77,18 @@ var urlDatabase = {
             {
               url: "http://www.lighthouselabs.ca",
               id: "i_mack5@hotmail.com",
-              views: 0
+              views: 0,
+              viewers: [],
+              uniqueViews: 0
             },
 
   "9sm5xK":
             {
               url: "http://www.google.com",
               id: "tim@hotmail.com",
-              views: 0
+              views: 0,
+              viewers: [],
+              uniqueViews: 0
             }
 };
 
@@ -166,7 +170,9 @@ app.post("/urls", (req, res) => {
   urlDatabase[randomString] = {
                                 url: req.body.longURL,
                                 id: users[req.session.user_id].email,
-                                views: 0
+                                views: 0,
+                                viewers: [],
+                                uniqueViews: 0
                               };
 
   res.redirect(`urls/${randomString}`)
@@ -182,6 +188,18 @@ app.get("/u/:shortURL", (req, res) => {
 
   //Increments views on specified TinyUrl
   urlDatabase[req.params.shortURL].views++;
+
+//element => element == req.session.user_id
+  let uniqueStatus = urlDatabase[req.params.shortURL].viewers.find(function(element){
+    return element == req.session.user_id;
+  });
+
+  if(uniqueStatus == undefined){
+    urlDatabase[req.params.shortURL].viewers.push(req.session.user_id);
+    urlDatabase[req.params.shortURL].uniqueViews++;
+  }
+
+
 
   let longURL = urlDatabase[req.params.shortURL].url;
   res.redirect(longURL);
