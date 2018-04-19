@@ -1,20 +1,21 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <% include partials/_headers %>
 </head>
 <body>
-  <% include partials/_headers %>
-  <a href="linkforshorteningURLS.com"> Link for Shortening URLS </a>
-  <ul>
+  <a href="/urls/new"> Add a new shortened URL </a>
+  <ul style="list-style-type:none">
     <% for (var a in urls) { %>
     <li>
-      <%= urls[a].url %>
-      <form method="POST" action="/urls/<%= a %>/delete">
-       <button name="button">DELETE</button>
-      </form>
-      <form method="GET" action="/urls/<%= a %>">
-        <button name="button"> Edit </button>
-      </form>
+      <%=a%>: <%= urls[a].url %>  ----->
+        <form method="POST" action="/urls/<%= a %>/delete" style='display:inline;'>
+         <button name="button">DELETE</button>
+
+        </form>
+        <form method="GET" action="/urls/<%= a %>" style='display:inline;'>
+          <button name="button"> Edit </button>
+        </form>
     </li>
     <% } %>
   </ul>
