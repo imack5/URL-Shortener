@@ -107,7 +107,7 @@ app.get("/hello", (req, res) => {
 app.get("/urls", (req, res) => {
 
   if(req.cookies["user_ID"] == undefined){
-    res.redirect('/login');
+    res.render('login_prompt');
   }
 
   let templateVars = {
@@ -138,12 +138,22 @@ app.get("/urls/:id", (req, res) => {
                         user_ID: req.cookies["user_ID"],
                         users: users
                       };
+  console.log(req.cookies["user_ID"] == undefined );
+
+  if(req.cookies["user_ID"] == undefined){
+    res.render('login_prompt');
+  }
+  console.log('1');
 
   if(urlDatabase[req.params.id].id == users[req.cookies["user_ID"]].email){
-    res.redirect('/urls');
+    //res.redirect('/urls');
+    res.render("urls_show", templateVars);
+    console.log('2')
+  } else {
+    res.render('login_warning');
   }
-
-  res.render("urls_show", templateVars);
+  console.log('3')
+  //res.render("urls_show", templateVars);
 });
 
 app.post("/urls", (req, res) => {
