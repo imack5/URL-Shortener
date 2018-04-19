@@ -1,0 +1,95 @@
+[33mcommit ba19815ab3dd275616eb511c594504d0cd23b865[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 21:15:33 2018 +0000
+
+    Added a user characteristic to each shortened URL
+
+[33mcommit 1b096890151dd23a081e94d0e0eb6d72dace2a30[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 21:05:14 2018 +0000
+
+    Require user to be logged in to create new url
+
+[33mcommit 11abaa2aca755163f26e70cc2c3386c0ded8ba32[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 20:05:57 2018 +0000
+
+    Modified code for cookies to allow user_ID instead of username
+
+[33mcommit 2ad96a9c64371910343e4b5254028a96ad8bb416[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 19:13:08 2018 +0000
+
+    Modified header to link to register and login pages if not logged in
+
+[33mcommit c1ccdf53e625bcdcf29f6a88ea5a1e2ee16c8386[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 19:09:25 2018 +0000
+
+    added a seperate login form
+
+[33mcommit 672bd2647e3d89193279fc23dd73aae0a8086ae2[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 18:57:17 2018 +0000
+
+    updated the header implementation to accept user database
+
+[33mcommit bb4b234279c7584c999730f146bbe27207bb40a5[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 18:51:36 2018 +0000
+
+    Added some error codes
+
+[33mcommit 09f9b9b0ef161070f84bbcba7bda2c4b8cdc7a46[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 18:35:39 2018 +0000
+
+    Added a way to handle the regitration information and add it to a database
+
+[33mcommit bf6bb9f4bffdd41455a85c7efd26a015b49fe914[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 18:26:00 2018 +0000
+
+    Added a registration Page
+
+[33mcommit 1429e41b33f1d13a720ab365e58c4746c999791a[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 17:16:02 2018 +0000
+
+    Added logout functionality
+
+[33mcommit d834efb605273231181e684252bb45a0d21847d6[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 17:10:18 2018 +0000
+
+    Added views dependent on the cookie
+
+[33mcommit d0576738eb99c163795d2ae2774b8d313b226c11[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 16:34:31 2018 +0000
+
+    Added a cookie set function
+
+[33mcommit 12cb37140ccfb10d9f1827fa00638e5ad77a4e30[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 16:16:39 2018 +0000
+
+    Added a response to the login
+
+[33mcommit bfd866fbf4657536380818418e702ca1042b4469[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 16:05:15 2018 +0000
+
+    Added a header login form
+
+[33mcommit 30c4a643b1fcf42fce49fe93c617c6fdb342c7d7[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 15:53:49 2018 +0000
+
+    Added cookie-parser package
+
+[33mcommit 1b51e8f78b6246def2d004826fa03946aa2aba6e[m
+Author: imack5 <iainsmackenzie@gmail.com>
+Date:   Wed Apr 18 15:44:37 2018 +0000
+
+    Added progress of URL shortener up to this point (Totally forgot to add and commit the first day's work. Ooops :) )

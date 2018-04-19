@@ -3,6 +3,38 @@ var app = express();
 var PORT = process.env.PORT || 8080; // default port 8080
 var cookieParser = require('cookie-parser');
 
+console.log("hieee");
+
+console.log("hey");
+
+console.log("hiiiiiii");
+
+
+function generateRandomString(length){
+  let randomString = [];
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for(let a = 0; a < length; a += 1){
+    var randomNumber = Math.floor(Math.random() * possible.length);
+    randomString.push(possible[randomNumber]);
+  }
+
+  let returnString = randomString.join('');
+  return returnString;
+}
+
+function urlsForUserID(userID){
+  let urlsForUser = {};
+  for(let link in urlDatabase){
+    console.log(urlDatabase[link].id, '==' ,userID, urlDatabase[link].id == userID)
+    if(urlDatabase[link].id == userID){
+      urlsForUser[link] = urlDatabase[link];
+    }
+  }
+  return urlsForUser;
+}
+
+
 const users = {
   "userRandomID":
                   {
@@ -15,6 +47,19 @@ const users = {
                     id: "user2RandomID",
                     email: "user2@example.com",
                     password: "dishwasher-funk"
+                  },
+ "Iain":
+                  {
+                    id: "Iain",
+                    email: "i_mack5@hotmail.com",
+                    password: "hi"
+                  },
+
+ "Tim":
+                  {
+                    id: "Tim",
+                    email: "tim@hotmail.com",
+                    password: "hi"
                   }
 
 };
@@ -27,22 +72,7 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-function generateRandomString(length){
-  let randomString = [];
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for(let a = 0; a < length; a += 1){
-    var randomNumber = Math.floor(Math.random() * possible.length);
-    console.log(randomNumber);
-    randomString.push(possible[randomNumber]);
-  }
-
-  let returnString = randomString.join('');
-  return returnString;
-}
-
-
-console.log(generateRandomString(6));
 
 var urlDatabase = {
   "b2xVn2":
@@ -54,7 +84,7 @@ var urlDatabase = {
   "9sm5xK":
             {
               url: "http://www.google.com",
-              id: "i_mack5@hotmail.com"
+              id: "tim@hotmail.com"
             }
 };
 
@@ -75,13 +105,17 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  console.log(req.cookies);
+
+  if(req.cookies["user_ID"] == undefined){
+    res.redirect('/login');
+  }
 
   let templateVars = {
-                       urls: urlDatabase,
+                       urls: urlsForUserID(users[req.cookies["user_ID"]].email),
                        user_ID: req.cookies["user_ID"],
                        users: users
                      };
+
                      console.log(templateVars.user_ID)
   res.render("urls_index", templateVars);
 });
@@ -105,12 +139,16 @@ app.get("/urls/:id", (req, res) => {
                         users: users
                       };
 
+  if(urlDatabase[req.params.id].id == users[req.cookies["user_ID"]].email){
+    res.redirect('/urls');
+  }
+
   res.render("urls_show", templateVars);
 });
 
 app.post("/urls", (req, res) => {
   console.log(req.body);
-  let randomString = generateRandomString(6)
+  let randomString = generateRandomString(6);
   urlDatabase[randomString].url = req.body.longURL;
   urlDatabase[randomString].id = req.cookies['user_ID'];
 
@@ -124,21 +162,23 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 app.post("/urls/:id/delete", (req, res) => {
-  delete urlDatabase[req.params.id];
-  console.log(urlDatabase);
+  if(urlDatabase[req.params.id].id == users[req.cookies["user_ID"]].email){
+    res.redirect("/urls");
+    delete urlDatabase[req.params.id];
+  }
   res.redirect("/urls");
 });
 
 app.post("/urls/:id", (req, res) => {
-  console.log('Hey!!')
-  urlDatabase[req.params.id].url = req.body.longURL;
 
+  urlDatabase[req.params.id].url = req.body.longURL;
   res.redirect("/urls");
 });
 
 app.post("/login", (req, res) => {
   var emailCheck = false;
   var something = req.body.email;
+
   for(let userID in users){
     if(users[userID].email == req.body.email){
       emailCheck = true;
