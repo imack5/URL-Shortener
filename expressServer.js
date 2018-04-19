@@ -15,44 +15,39 @@ app.set("view engine", "ejs");
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
+});
+
+//Generates a random string with the characteristics [a-z][A-Z][1-9]
 function generateRandomString(length){
-  let randomString = [];
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let randomStringArr = [];
+  let possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   for(let a = 0; a < length; a += 1){
-    var randomNumber = Math.floor(Math.random() * possible.length);
-    randomString.push(possible[randomNumber]);
+    var randomNumber = Math.floor(Math.random() * possibleChars.length);
+    randomStringArr.push(possibleChars[randomNumber]);
   }
 
-  let returnString = randomString.join('');
-  return returnString;
+  let randomString = randomStringArr.join('');
+  return randomString;
 }
 
+//returns urls owned by a specified user
 function urlsForUserID(userID){
   let urlsForUser = {};
-  for(let link in urlDatabase){
-    console.log(urlDatabase[link].id, '==' ,userID, urlDatabase[link].id == userID)
-    if(urlDatabase[link].id == userID){
-      urlsForUser[link] = urlDatabase[link];
+
+  for(let shortURL in urlDatabase){
+    if(urlDatabase[shortURL].id == userID){
+      urlsForUser[shortURL] = urlDatabase[link];
     }
   }
   return urlsForUser;
 }
 
-
+//Database of users
 const users = {
-  "userRandomID":
-                  {
-                    id: "userRandomID",
-                    email: "user@example.com",
-                    password: "purple-monkey-dinosaur"
-                  },
- "user2RandomID":
-                  {
-                    id: "user2RandomID",
-                    email: "user2@example.com",
-                    password: "dishwasher-funk"
-                  },
+
  "Iain":
                   {
                     id: "Iain",
@@ -69,7 +64,9 @@ const users = {
 
 };
 
+//Data base of urls
 var urlDatabase = {
+
   "b2xVn2":
             {
               url: "http://www.lighthouselabs.ca",
@@ -83,41 +80,39 @@ var urlDatabase = {
             }
 };
 
+//Home page directs to either /urls if logged in, if not to a login page
 app.get("/", (req, res) => {
-  (req.session.user_id == undefined) ?   res.redirect('/login') : res.redirect('/urls')
+  req.session.user_id == undefined ? res.redirect('/login') : res.redirect('/urls');
 });
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
-});
-
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
-
-app.get("/hello", (req, res) => {
-  res.end("<html><body>Hello <b>World</b></body></html>\n");
-});
-
+//Essentially the home page for site
 app.get("/urls", (req, res) => {
 
+  //If not logged in, redirect to login/register prompt
   if(req.session.user_id == undefined){
     res.render('login_prompt');
     return;
   }
 
+  //Vars to pass into the /views/..
   let templateVars = {
                        urls: urlsForUserID(users[req.session.user_id].email),
                        user_ID: req.session.user_id,
                        users: users
                      };
 
-                     console.log(templateVars.user_ID)
   res.render("urls_index", templateVars);
 });
 
+//
 app.get("/urls/new", (req, res) => {
-  if(!req.session.user_id){ res.redirect('/login');}
+
+  //Redirects to login page if not logged in
+  if(!req.session.user_id){
+    res.redirect('/login');
+  }
+
+  //Vars to pass into the /views/..
   let templateVars =  {
                         user_ID: req.session.user_id,
                         users: users
@@ -126,11 +121,15 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
+//Displays update page for the chosen mini url
 app.get("/urls/:id", (req, res) => {
 
+  //Redirects if mini url doesn't exist
   if(urlDatabase[req.params.id] === undefined){
     res.send('This short URL doesnt exist');
   }
+
+  //Vars to pass into the /views/..
   let templateVars =  {
                         shortUrls: req.params.id,
                         fullUrl: urlDatabase[req.params.id].url,
@@ -138,32 +137,33 @@ app.get("/urls/:id", (req, res) => {
                         users: users
                       };
 
+  //If user not logged in, redirect to login
   if(req.session.user_id == undefined){
     res.render('login_prompt');
   }
 
+  //verifies the ownership of the shortURL
   if(urlDatabase[req.params.id].id == users[req.session.user_id].email){
     res.render("urls_show", templateVars);
   } else {
-    res.render('login_warning');
+    res.render('owner_warning');
   }
-  console.log('3')
-  //res.render("urls_show", templateVars);
 });
 
+//Generates new shortURL
 app.post("/urls", (req, res) => {
 
   let randomString = generateRandomString(6);
+
   urlDatabase[randomString] = {
                                 url: req.body.longURL,
                                 id: users[req.session.user_id].email
                               };
 
-  console.log(urlDatabase);
   res.redirect(`urls/${randomString}`)
- // res.send("Posted new url " + req.body.longURL);         // Respond with 'Ok' (we will replace this)
 });
 
+//Navigates to shortURL's corresponding longURL
 app.get("/u/:shortURL", (req, res) => {
 
   if(urlDatabase[req.params.id] === undefined){
@@ -174,7 +174,10 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
+//Deletes shortURL
 app.post("/urls/:id/delete", (req, res) => {
+
+  //Verifies ownership
   if(urlDatabase[req.params.id].id == users[req.session.user_id].email){
     res.redirect("/urls");
     delete urlDatabase[req.params.id];
@@ -182,19 +185,24 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/urls");
 });
 
+//updates longUrl of specified shortURL
 app.post("/urls/:id", (req, res) => {
-
   urlDatabase[req.params.id].url = req.body.longURL;
   res.redirect("/urls");
 });
 
+//logs in corresponding user
 app.post("/login", (req, res) => {
   let emailCheck = false;
 
+  //iterates through users in the database
   for(let userID in users){
+
+    //Checks email
     if(users[userID].email == req.body.email){
       emailCheck = true;
 
+      //If email exists, check password match
       if(bcrypt.compareSync(req.body.password, users[userID].password)){
         req.session.user_id = userID;
       } else {
@@ -202,15 +210,19 @@ app.post("/login", (req, res) => {
       }
     }
   }
+
+  //If email does not match any, return error.
   if(!emailCheck){ res.status(400).send('No Email in the system');}
-  res.redirect("/urls")
+  res.redirect("/urls");
 
 });
 
+//Logout and clears cookies
 app.get("/logout", (req, res) => {
   req.session = null;
   res.redirect("/urls");
 });
+
 
 app.get("/register", (req, res) => {
   if(req.session.user_id !== undefined){
@@ -222,35 +234,37 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   var userID = generateRandomString(6);
 
+  //checks validity of entered email and password
   if(req.body.email == '' || req.body.password == ''){
     res.status(400).send('You must complete the email and password forms fully');
   }
 
+  //verifies no duplicate users
   for(let a in users){
     if(users[a].email == req.body.email){
       res.status(400).send('Email already registered');
     }
   }
 
-
+  //sets login status of newly verified user
   req.session.user_id = userID;
 
-  console.log('password:', req.body.password)
-
+  //creates user
   users[userID] = {
-    id: userID,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 10)
-  };
+                    id: userID,
+                    email: req.body.email,
+                    password: bcrypt.hashSync(req.body.password, 10)
+                  };
 
-  console.log(users);
   res.redirect("/urls");
 });
 
+//Login page
 app.get("/login", (req, res) => {
   if(req.session.user_id !== undefined){
     res.redirect('/urls');
   }
+
   let templateVars =  {
                         user_ID: req.session.user_id,
                         users: users
