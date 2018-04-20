@@ -79,7 +79,8 @@ var urlDatabase = {
               id: "i_mack5@hotmail.com",
               views: 0,
               viewers: [],
-              uniqueViews: 0
+              uniqueViews: 0,
+              visits: []
             },
 
   "9sm5xK":
@@ -88,7 +89,8 @@ var urlDatabase = {
               id: "tim@hotmail.com",
               views: 0,
               viewers: [],
-              uniqueViews: 0
+              uniqueViews: 0,
+              visits: []
             }
 };
 
@@ -172,10 +174,11 @@ app.post("/urls", (req, res) => {
                                 id: users[req.session.user_id].email,
                                 views: 0,
                                 viewers: [],
-                                uniqueViews: 0
+                                uniqueViews: 0,
+                                visits: []
                               };
 
-  res.redirect(`urls/${randomString}`)
+  res.redirect(`urls/${randomString}`);
 });
 
 //Navigates to shortURL's corresponding longURL
@@ -198,6 +201,11 @@ app.get("/u/:shortURL", (req, res) => {
     urlDatabase[req.params.shortURL].viewers.push(req.session.user_id);
     urlDatabase[req.params.shortURL].uniqueViews++;
   }
+
+  urlDatabase[req.params.shortURL].visits.push( {
+                                                  user: req.session.user_id,
+                                                  time: new Date()
+                                                });
 
 
 

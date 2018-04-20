@@ -1,0 +1,30 @@
+[33ma686c8f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/analytics[m[33m)[m added unique viewer count
+[33m49d5c7b[m Added a view counter for times a TinyURL was followed to its fullURL
+[33ma695fe0[m started to add anytics features to the project
+[33m5c4602c[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m Added method override to make code more RESTful
+[33m0c5fb07[m Added screenshots
+[33m61b3f31[m Added screenshots
+[33m8ea3d8e[m Added screenshots
+[33m1a23cf0[m added README.md
+[33m3ddaaf7[m Refactored code and added comments
+[33md44a451[m Checked functionality and made minor changes
+[33m6825ac1[m added encrypted cookies
+[33mb5c516d[m Added password hashing
+[33m7976d78[m completed ownership association
+[33m3031a5c[m added features that add ownership to specific shortURLS
+[33mba19815[m Added a user characteristic to each shortened URL
+[33m1b09689[m Require user to be logged in to create new url
+[33m11abaa2[m[33m ([m[1;31morigin/feature/user-registration[m[33m, [m[1;32mfeature/user-specific[m[33m, [m[1;32mfeature/user-registration[m[33m)[m Modified code for cookies to allow user_ID instead of username
+[33m2ad96a9[m Modified header to link to register and login pages if not logged in
+[33mc1ccdf5[m added a seperate login form
+[33m672bd26[m updated the header implementation to accept user database
+[33mbb4b234[m Added some error codes
+[33m09f9b9b[m Added a way to handle the regitration information and add it to a database
+[33mbf6bb9f[m Added a registration Page
+[33m1429e41[m[33m ([m[1;31morigin/feature/cookies[m[33m, [m[1;32mfeature/cookies[m[33m)[m Added logout functionality
+[33md834efb[m Added views dependent on the cookie
+[33md057673[m Added a cookie set function
+[33m12cb371[m Added a response to the login
+[33mbfd866f[m Added a header login form
+[33m30c4a64[m Added cookie-parser package
+[33m1b51e8f[m Added progress of URL shortener up to this point (Totally forgot to add and commit the first day's work. Ooops :) )

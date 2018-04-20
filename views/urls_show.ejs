@@ -10,10 +10,18 @@
         <label for="longURL"> <%= fullUrl.url %> </label>
         <input id="longURL" type="text" name="longURL" placeholder="<%= fullUrl.url %>">
         <button name="button">UPDATE</button>
-        <p> VIEWS: <%= fullUrl.views %> </p>
-        <p> UNIQUE VIEWS: <%=fullUrl.uniqueViews%> </p>
       </form>
     </li>
   </ul>
+  <p> VIEWS: <%= fullUrl.views %> </p>
+  <p> UNIQUE VIEWS: <%=fullUrl.uniqueViews%> </p>
+  <ol>
+    <%if(fullUrl.visits.length != 0) {%>
+    <%for(let visit of fullUrl.visits) {%>
+    <li>User: <%= visit.user%>  Visted @: <%=visit.time %></li>
+    <%}%>
+    <%}%>
+
+  </ol>
 </body>
 </html>
