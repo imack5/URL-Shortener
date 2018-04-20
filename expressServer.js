@@ -8,7 +8,6 @@ var methodOverride = require('method-override');
 
 app.use(methodOverride('_method'));
 
-
 app.use(methodOverride('X-HTTP-Method-Override'))
 
 app.use(cookieSession({
@@ -103,7 +102,7 @@ app.get("/", (req, res) => {
 app.get("/urls", (req, res) => {
 
   //If not logged in, redirect to login/register prompt
-  if(req.session.user_id == undefined){
+  if(req.session.user_id === undefined){
     res.render('login_prompt');
     return;
   }
@@ -118,7 +117,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-//
+//directs to a page to creat a new TinyUrl
 app.get("/urls/new", (req, res) => {
 
   //Redirects to login page if not logged in
@@ -184,11 +183,6 @@ app.post("/urls", (req, res) => {
 //Navigates to shortURL's corresponding longURL
 app.get("/u/:id", (req, res) => {
 
-  console.log('hi')
-  console.log(urlDatabase)
-  console.log(req.params.id)
-  console.log(urlDatabase[req.params.id])
-
   if(urlDatabase[req.params.id] === undefined){
     res.send('This short URL doesnt exist hey');
     return;
@@ -197,25 +191,24 @@ app.get("/u/:id", (req, res) => {
   //Increments views on specified TinyUrl
   urlDatabase[req.params.id].views++;
 
-//element => element == req.session.user_id
+  //returns true if the user has not accessed the link before
   let uniqueStatus = urlDatabase[req.params.id].viewers.find(function(element){
     return element == req.session.user_id;
   });
 
+  //if the user has not visited the link before, add as a unique view.
   if(uniqueStatus == undefined){
     urlDatabase[req.params.id].viewers.push(req.session.user_id);
     urlDatabase[req.params.id].uniqueViews++;
   }
 
-  urlDatabase[req.params.id].visits.push( {
-                                                  user: req.session.user_id,
-                                                  time: new Date()
-                                                });
-
-
+  //
+  urlDatabase[req.params.id].visits.push({
+                                            user: req.session.user_id,
+                                            time: new Date()
+                                        });
 
   let longURL = urlDatabase[req.params.id].url;
-  console.log("to direct to",longURL)
   res.redirect(longURL);
 });
 
@@ -268,7 +261,7 @@ app.get("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
-
+//Renders registration page
 app.get("/register", (req, res) => {
   if(req.session.user_id !== undefined){
     res.redirect('/urls');
@@ -276,6 +269,7 @@ app.get("/register", (req, res) => {
   res.render("registration");
 });
 
+//registers user
 app.post("/register", (req, res) => {
   var userID = generateRandomString(6);
 
