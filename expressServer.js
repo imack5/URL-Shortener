@@ -182,34 +182,40 @@ app.post("/urls", (req, res) => {
 });
 
 //Navigates to shortURL's corresponding longURL
-app.get("/u/:shortURL", (req, res) => {
+app.get("/u/:id", (req, res) => {
+
   console.log('hi')
-  console.log(req.params.shortURL)
-  if(urlDatabase[req.params.shortURL] === undefined){
-    res.send('This short URL doesnt exist');
+  console.log(urlDatabase)
+  console.log(req.params.id)
+  console.log(urlDatabase[req.params.id])
+
+  if(urlDatabase[req.params.id] === undefined){
+    res.send('This short URL doesnt exist hey');
+    return;
   }
 
   //Increments views on specified TinyUrl
-  urlDatabase[req.params.shortURL].views++;
+  urlDatabase[req.params.id].views++;
 
 //element => element == req.session.user_id
-  let uniqueStatus = urlDatabase[req.params.shortURL].viewers.find(function(element){
+  let uniqueStatus = urlDatabase[req.params.id].viewers.find(function(element){
     return element == req.session.user_id;
   });
 
   if(uniqueStatus == undefined){
-    urlDatabase[req.params.shortURL].viewers.push(req.session.user_id);
-    urlDatabase[req.params.shortURL].uniqueViews++;
+    urlDatabase[req.params.id].viewers.push(req.session.user_id);
+    urlDatabase[req.params.id].uniqueViews++;
   }
 
-  urlDatabase[req.params.shortURL].visits.push( {
+  urlDatabase[req.params.id].visits.push( {
                                                   user: req.session.user_id,
                                                   time: new Date()
                                                 });
 
 
 
-  let longURL = urlDatabase[req.params.shortURL].url;
+  let longURL = urlDatabase[req.params.id].url;
+  console.log("to direct to",longURL)
   res.redirect(longURL);
 });
 
